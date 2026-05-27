@@ -17,8 +17,7 @@ import SelectField from '@/components/form/SelectField'
 import { createLoadingSelector } from '@/store/loaderSlice'
 import { createPost, CREATE_POST, updatePost, UPDATE_POST, getPostDetailById, selectPostDetail, clearPostDetail } from '@/store/postSlice'
 import { getListCategories, selectListCategories } from '@/store/categorySlice'
-import { uploadImage, clearUploadedImage, deleteImage } from '@/store/uploadSlice'
-import { uploadService } from '@/services/uploadService'
+import { uploadImage, deleteImage, DELETE_IMAGE } from '@/store/uploadSlice'
 import { stringHelpers } from '@/helpers'
 import { ADMIN_ROUTES, CATEGORY_TYPE } from '@/constants'
 
@@ -38,7 +37,7 @@ const CreatePostPage = () => {
   const postDetail = useSelector(selectPostDetail)
 
   const dispatch = useDispatch()
-  const loadingSelector = createLoadingSelector([CREATE_POST, UPDATE_POST])
+  const loadingSelector = createLoadingSelector([CREATE_POST, UPDATE_POST, DELETE_IMAGE])
   const isLoading = useSelector((state) => loadingSelector(state.loader))
   const [highlight, setHighlight] = useState(false)
   const [published, setPublished] = useState(true)
@@ -159,9 +158,13 @@ const CreatePostPage = () => {
           }
         })
 
-        if (editorReady && editor?.getData() !== '') {
-          editor.setData('')
-        }
+        // Delay to React re-render done, then setData
+        setTimeout(() => {
+          if (editor && editorReady) {
+            editor.setData('')
+          }
+        }, 100)
+
         setPublished(true)
         setHighlight(false)
       }
@@ -206,37 +209,41 @@ const CreatePostPage = () => {
   useEffect(() => {
     if (!editor || !editorReady) return
 
-    // CREATE MODE
-    if (!isEdit) {
-      reset({
-        title: '',
-        description: '',
-        thumbnail: null,
-        category: { id: '', name: '', slug: '' }
-      })
+    const timer = setTimeout(() => {
+      // CREATE MODE
+      if (!isEdit) {
+        reset({
+          title: '',
+          description: '',
+          thumbnail: null,
+          category: { id: '', name: '', slug: '' }
+        })
 
-      setHighlight(false)
-      setPublished(true)
+        setHighlight(false)
+        setPublished(true)
 
-      if (editor.getData() !== '') {
-        editor.setData('')
+        if (editor.getData() !== '') {
+          editor.setData('')
+        }
+
+        return
       }
 
-      return
-    }
+      // EDIT MODE
+      if (postDetail?._id === id) {
+        reset({
+          title: postDetail.title || '',
+          description: postDetail.description || '',
+          thumbnail: postDetail.thumbnail || null,
+          category: postDetail.category || { id: '', name: '', slug: '' }
+        })
+        setHighlight(!!postDetail.highlight)
+        setPublished(!!postDetail.published)
+        editor.setData(postDetail.content || '')
+      }
+    }, 100)
 
-    // EDIT MODE
-    if (postDetail?._id === id) {
-      reset({
-        title: postDetail.title || '',
-        description: postDetail.description || '',
-        thumbnail: postDetail.thumbnail || null,
-        category: postDetail.category || { id: '', name: '', slug: '' }
-      })
-      setHighlight(!!postDetail.highlight)
-      setPublished(!!postDetail.published)
-      editor.setData(postDetail.content || '')
-    }
+    return () => clearTimeout(timer)
   }, [isEdit, postDetail, id, editor, editorReady, reset])
 
   return (
@@ -342,7 +349,6 @@ const CreatePostPage = () => {
               <div>
                 <p>Content</p>
                 <PostEditor
-                  key={id || 'create'}
                   setEditor={setEditor}
                   setEditorReady={setEditorReady}
                 />

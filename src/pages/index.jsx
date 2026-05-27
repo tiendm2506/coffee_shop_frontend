@@ -69,7 +69,7 @@ export default function Home() {
                       <Product
                         key={index}
                         name={product.name}
-                        image={product.image}
+                        images={product.images}
                         originPrice={product.origin_price}
                         promotionPrice={product.promotion_price}
                         isOnSale={product.on_sale}
@@ -94,7 +94,7 @@ export default function Home() {
                     <Product
                       key={index}
                       name={product.name}
-                      image={product.image}
+                      images={product.images}
                       originPrice={product.origin_price}
                       promotionPrice={product.promotion_price}
                       isOnSale={product.on_sale}

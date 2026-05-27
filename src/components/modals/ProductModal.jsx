@@ -13,14 +13,17 @@ import SwitchButton from '../admin/SwitchButton'
 import Button from '../common/Button'
 import ImageUpload from '../form/ImageUpload'
 import { selectListCategories, getListCategories } from '@/store/categorySlice'
-import { createProduct, updateProduct } from '@/store/productSlice'
-import { uploadImages } from '@/store/uploadSlice'
+import { CREATE_PRODUCT, createProduct, UPDATE_PRODUCT, updateProduct } from '@/store/productSlice'
+import { createLoadingSelector } from '@/store/loaderSlice'
+import { uploadImages, UPLOAD_MULTIPLE } from '@/store/uploadSlice'
 import { closeModal } from '@/store/modalSlice'
 import { CATEGORY_TYPE, STATUS } from '@/constants'
 import { stringHelpers } from '@/helpers'
 
 const ProductModal = ({ name }) => {
   const dispatch = useDispatch()
+  const loadingSelector = createLoadingSelector([CREATE_PRODUCT, UPDATE_PRODUCT, UPLOAD_MULTIPLE])
+  const isLoading = useSelector((state) => loadingSelector(state.loader))
   const categoriesFetch = useSelector(selectListCategories)
   const [_, setCategories] = useState([])
   const { isOpen, data, name: modalName, props } = useSelector((state) => state.modal)
@@ -36,11 +39,7 @@ const ProductModal = ({ name }) => {
     detail: '',
     origin_price: '',
     promotion_price: '',
-    category: {
-      id: '',
-      name: '',
-      slug: ''
-    },
+    category: { id: '', name: '', slug: '' },
     amount_in_stock: '',
     slug: '',
     highlight: false,
@@ -113,11 +112,7 @@ const ProductModal = ({ name }) => {
       detail: '',
       origin_price: '',
       promotion_price: '',
-      category: {
-        id: '',
-        name: '',
-        slug: ''
-      },
+      category: { id: '', name: '', slug: '' },
       amount_in_stock: '',
       slug: '',
       on_sale: false
@@ -150,9 +145,7 @@ const ProductModal = ({ name }) => {
           images: imageUrls,
           slug: stringHelpers.slugify(data.name),
           highlight,
-          status: active
-            ? STATUS.ACTIVE
-            : STATUS.INACTIVE
+          status: active ? STATUS.ACTIVE : STATUS.INACTIVE
         })).unwrap()
       } else {
         let imageUrls = []
@@ -167,15 +160,9 @@ const ProductModal = ({ name }) => {
         let uploadedUrls = []
         if (newFiles.length) {
           const uploaded = await dispatch(uploadImages(newFiles)).unwrap()
-
-          uploadedUrls = uploaded.map(
-            img => img.url
-          )
+          uploadedUrls = uploaded.map(img => img.url)
         }
-        imageUrls = [
-          ...oldImages,
-          ...uploadedUrls
-        ]
+        imageUrls = [...oldImages, ...uploadedUrls]
         await dispatch(updateProduct({
           productId,
           data: {
@@ -196,23 +183,17 @@ const ProductModal = ({ name }) => {
   }
 
   useEffect(() => {
-    if (!onSale) {
-      setValue('promotion_price', '')
-    }
+    if (!onSale) setValue('promotion_price', '')
   }, [onSale])
 
   useEffect(() => {
-    if (!isOpen) {
-      return reset(defaultValues)
-    }
-
+    if (!isOpen) return reset(defaultValues)
   }, [isOpen])
 
   useEffect(() => {
     if (isOpen && data) {
       reset({
         name: data.name || '',
-        // images: data.images || [],
         images: data.images?.map(url => ({
           preview: url
         })) || [],
@@ -349,7 +330,7 @@ const ProductModal = ({ name }) => {
                 }
               />
             </div>
-            <Button type='submit' size='sm'>{textAction}</Button>
+            <Button loading={isLoading} type='submit' size='sm'>{textAction}</Button>
           </form>
         </FormProvider>
 

@@ -45,7 +45,7 @@ const ImageUpload = ({
         onClick={() =>
           inputRef.current.click()
         }
-        className='w-full border-2 border-dashed border-gray-300 rounded-xl p-8 flex flex-col items-center justify-center gap-3 hover:border-light-coffee transition cursor-pointer'
+        className='w-full border-2 border-dashed border-gray-300 rounded-xl px-8 py-2 flex flex-col items-center justify-center gap-3 hover:border-light-coffee transition cursor-pointer'
       >
         <IoCloudUploadOutline
           size={42}
@@ -58,13 +58,13 @@ const ImageUpload = ({
           </p>
 
           <p className='text-sm text-gray-500'>
-            PNG, JPG up to 5MB
+            PNG, JPG up to 5MB/file, Max 4 files
           </p>
         </div>
       </button>
 
       {value.length > 0 && (
-        <div className='grid grid-cols-3 gap-4'>
+        <div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
           {value.map(
             (img, index) => (
               <div
@@ -82,9 +82,9 @@ const ImageUpload = ({
                   onClick={() =>
                     removeImage(index)
                   }
-                  className='absolute top-2 right-2 bg-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition'
+                  className='absolute top-2 right-2 bg-white rounded-full p-1 shadow opacity-0 group-hover:opacity-100 transition cursor-pointer'
                 >
-                  <IoClose size={18} />
+                  <IoClose size={18} color='red' />
                 </button>
               </div>
             )

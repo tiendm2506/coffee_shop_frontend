@@ -1,6 +1,5 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { MainLayout } from '@/components/layout'
@@ -17,6 +16,12 @@ export default function BlogPage() {
   const posts = useSelector(selectListPosts)
   const highlightPosts = useSelector(selectHighlightPosts)
   const categoryList = useSelector(selectListCategories)
+  const [categoryNameFilter, setCategoryNameFilter] = useState('')
+
+  const handleClickCategory =(cat) => {
+    dispatch(getListPosts({ limit: 4, category_slug: cat?.slug }))
+    setCategoryNameFilter(cat?.name)
+  }
 
   useEffect(() => {
     dispatch(getListCategories({ type: CATEGORY_TYPE.POST }))
@@ -55,7 +60,7 @@ export default function BlogPage() {
                       title={post?.title}
                       description={post?.description}
                       date={post?.createdAt}
-                      thumb={post?.thumbnail}
+                      thumb={post?.thumbnail?.url}
                       url={ROUTES.BLOG_DETAIL_PAGE.replace(':slug', post?.slug)}
                     />
                   )
@@ -71,6 +76,7 @@ export default function BlogPage() {
               {/* Lastes post  */}
               <div>
                 <h3 className='text-secondary text-2xl border-b border-b-[#ececed] pb-6 mb-6'>Latest Posts</h3>
+                { posts.length === 0 && <p>No post belong to <b>&quot;{categoryNameFilter}&quot;</b> category</p> }
                 <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
                   {
                     posts.map((post) =>
@@ -92,8 +98,9 @@ export default function BlogPage() {
                 <div>
                   <h3 className='text-secondary text-2xl border-b border-b-[#ececed] pb-6 mb-6'>Categories</h3>
                   <ul>
+                    <li className='cursor-pointer' onClick={() => dispatch(getListPosts({ limit: 4 }))}><span className='ct-category-item'>All</span></li>
                     {
-                      categoryList.map((cat) => <li key={cat?._id}><Link className='ct-category-item' href='#'>{cat?.name}</Link></li>)
+                      categoryList.map((cat) => <li key={cat?._id} className='cursor-pointer' onClick={() => handleClickCategory(cat)}><span className='ct-category-item' href='#'>{cat?.name}</span></li>)
                     }
                   </ul>
                 </div>
