@@ -8,9 +8,10 @@ export default class UploadAdapter {
   async upload() {
     try {
       const file = await this.loader.file
-      const data = await uploadService.uploadImage( file )
-      return { default:data.url }
+      const response = await uploadService.uploadImage( file )
+      return { default: response.image.url }
     } catch (error) {
+      console.error('CKEditor upload failed:', error)
       throw error
     }
   }

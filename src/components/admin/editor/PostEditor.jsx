@@ -3,13 +3,17 @@ import { CKEditor } from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import UploadAdapter from './UploadAdapter'
 
-function PostEditor({ setEditor }) {
+function PostEditor({ setEditor, setEditorReady }) {
   const editorRef = useRef(null)
 
   return (
     <div className='space-y-4 rounded-xl border bg-white p-4'>
       <CKEditor
         editor={ClassicEditor}
+        onAfterDestroy={() => {
+          setEditor(null)
+          setEditorReady(false)
+        }}
         config={{
           licenseKey: 'GPL',
           toolbar: [
@@ -32,10 +36,11 @@ function PostEditor({ setEditor }) {
         onReady={(editor) => {
           editorRef.current = editor
           setEditor(editor)
-          editor.plugins.get(
-            'FileRepository'
-          ).createUploadAdapter = (loader) =>
-            new UploadAdapter(loader)
+          setEditorReady(true)
+
+          editor.plugins.get('FileRepository')
+            .createUploadAdapter = (loader) =>
+              new UploadAdapter(loader)
         }}
       />
     </div>

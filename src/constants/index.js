@@ -64,7 +64,8 @@ export const API_ENDPOINTS = {
   DELETE_CLIENT_BY_ID: '/client/remove/:id',
   GET_LIST_CLIENTS: '/client/list',
 
-  UPLOAD_IMAGE: '/upload/image'
+  UPLOAD_SINGLE_IMAGE: '/upload/image',
+  DELETE_IMAGE: '/upload/image'
 }
 
 export const PROMOTION_TYPE = {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,6 +6,7 @@ import { object, string } from 'yup'
 import { useForm, FormProvider } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
+import { IoIosCloseCircle } from 'react-icons/io'
 import { useRouter } from 'next/router'
 
 import InputField from '@/components/form/InputField'
@@ -16,12 +17,17 @@ import SelectField from '@/components/form/SelectField'
 import { createLoadingSelector } from '@/store/loaderSlice'
 import { createPost, CREATE_POST, updatePost, UPDATE_POST, getPostDetailById, selectPostDetail, clearPostDetail } from '@/store/postSlice'
 import { getListCategories, selectListCategories } from '@/store/categorySlice'
+import { uploadImage, clearUploadedImage, deleteImage } from '@/store/uploadSlice'
+import { uploadService } from '@/services/uploadService'
 import { stringHelpers } from '@/helpers'
 import { ADMIN_ROUTES, CATEGORY_TYPE } from '@/constants'
 
 const PostEditor = dynamic(
   () => import('@/components/admin/editor/PostEditor'),
-  { ssr: false }
+  {
+    ssr: false,
+    loading: () => <p>Loading editor...</p>
+  }
 )
 
 const CreatePostPage = () => {
@@ -30,7 +36,6 @@ const CreatePostPage = () => {
   const isEdit = !!id
   const textAction = isEdit ? 'Update' : 'Create'
   const postDetail = useSelector(selectPostDetail)
-  console.log('postDetail: ', postDetail)
 
   const dispatch = useDispatch()
   const loadingSelector = createLoadingSelector([CREATE_POST, UPDATE_POST])
@@ -40,11 +45,18 @@ const CreatePostPage = () => {
   const categoriesFetch = useSelector(selectListCategories)
   const [categories, setCategories] = useState([])
   const [editor, setEditor] = useState(null)
+  const [uploadingThumbnail, setUploadingThumbnail] = useState(false)
+  const [deletingThumbnail, setDeletingThumbnail] = useState(false)
+  const [editorReady, setEditorReady] = useState(false)
+  const fileInputRef = useRef(null)
 
   const schema = object({
     title: string().required('Please enter your title'),
     description: string().required('Please enter your description'),
-    thumbnail: string().required('Please enter your thumbnail URL'),
+    thumbnail: object({
+      url: string().required(),
+      public_id: string().required()
+    }).nullable().notRequired(),
     category: object({
       id: string().required(),
       name: string().required(),
@@ -65,7 +77,7 @@ const CreatePostPage = () => {
       title: '',
       description: '',
       content: '',
-      thumbnail: '',
+      thumbnail: null,
       category: {
         id: '',
         name: '',
@@ -75,6 +87,43 @@ const CreatePostPage = () => {
   })
 
   const { reset } = methods
+
+  const handleUploadThumbnail = async (file) => {
+    if (!file) return
+
+    setUploadingThumbnail(true)
+
+    try {
+      const uploaded = await dispatch(
+        uploadImage(file)
+      ).unwrap()
+
+      methods.setValue('thumbnail', uploaded)
+    } finally {
+      setUploadingThumbnail(false)
+    }
+  }
+
+  const handleDeleteThumbnail = async () => {
+    const thumbnail = methods.watch('thumbnail')
+    if (!thumbnail?.public_id) return
+
+    setDeletingThumbnail(true)
+
+    try {
+      await dispatch(
+        deleteImage(thumbnail.public_id)
+      ).unwrap()
+
+      methods.setValue('thumbnail', null)
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    } finally {
+      setDeletingThumbnail(false)
+    }
+  }
 
   const onSubmit = async(data) => {
     try {
@@ -99,8 +148,20 @@ const CreatePostPage = () => {
       } else {
         await dispatch(createPost(dataPost)).unwrap()
         toast.success('Post created!')
-        reset()
-        editor?.setData('')
+        reset({
+          title: '',
+          description: '',
+          thumbnail: null,
+          category: {
+            id: '',
+            name: '',
+            slug: ''
+          }
+        })
+
+        if (editorReady && editor?.getData() !== '') {
+          editor.setData('')
+        }
         setPublished(true)
         setHighlight(false)
       }
@@ -126,7 +187,6 @@ const CreatePostPage = () => {
     if (!id) {
       dispatch(clearPostDetail())
       reset()
-      editor?.setData('')
       setHighlight(false)
       setPublished(true)
       return
@@ -141,22 +201,27 @@ const CreatePostPage = () => {
     return () => {
       dispatch(clearPostDetail())
     }
-  }, [id, dispatch, router, reset, editor])
+  }, [id, dispatch, router, reset])
 
   useEffect(() => {
-    if (!editor) return
+    if (!editor || !editorReady) return
 
     // CREATE MODE
     if (!isEdit) {
       reset({
         title: '',
         description: '',
-        thumbnail: '',
+        thumbnail: null,
         category: { id: '', name: '', slug: '' }
       })
+
       setHighlight(false)
       setPublished(true)
-      editor.setData('')
+
+      if (editor.getData() !== '') {
+        editor.setData('')
+      }
+
       return
     }
 
@@ -165,14 +230,14 @@ const CreatePostPage = () => {
       reset({
         title: postDetail.title || '',
         description: postDetail.description || '',
-        thumbnail: postDetail.thumbnail || '',
+        thumbnail: postDetail.thumbnail || null,
         category: postDetail.category || { id: '', name: '', slug: '' }
       })
       setHighlight(!!postDetail.highlight)
       setPublished(!!postDetail.published)
       editor.setData(postDetail.content || '')
     }
-  }, [isEdit, postDetail, id, editor, reset])
+  }, [isEdit, postDetail, id, editor, editorReady, reset])
 
   return (
     <>
@@ -200,27 +265,61 @@ const CreatePostPage = () => {
                 <InputField
                   name='title'
                   label='Title'
-                  labelClasses='text-left block'
+                  labelClasses='text-left block text-light-coffee'
                   inputClasses='bg-white'
                   required
                 />
                 <InputField
                   name='description'
                   label='Description'
-                  labelClasses='text-left block'
+                  labelClasses='text-left block text-light-coffee'
                   inputClasses='bg-white'
                   required
                 />
               </div>
 
               <div className='lg:grid lg:grid-cols-2 lg:gap-4'>
-                <InputField
-                  name='thumbnail'
-                  label='Thumbnail URL'
-                  labelClasses='text-left block'
-                  inputClasses='bg-white'
-                  required
-                />
+                <div>
+                  <label className='block text-sm mb-1 text-light-coffee'>Thumbnail</label>
+                  <input
+                    ref={fileInputRef}
+                    type='file'
+                    accept='image/*'
+                    className='w-full p-3 border border-light-coffee bg-white rounded-lg cursor-pointer'
+                    onChange={(e) => handleUploadThumbnail(e.target.files[0])}
+                    disabled={uploadingThumbnail || !!methods.watch('thumbnail')}
+                  />
+
+                  {uploadingThumbnail && (
+                    <p className='text-lg mt-2 text-light-coffee'>Uploading...</p>
+                  )}
+
+                  {methods.watch('thumbnail') && !uploadingThumbnail && (
+                    <div className='relative w-40 mt-3'>
+                      <img
+                        src={methods.watch('thumbnail').url || methods.watch('thumbnail')}
+                        alt='thumbnail'
+                        className={`w-40 h-40 object-cover rounded ${
+                          deletingThumbnail ? 'opacity-50' : ''
+                        }`}
+                      />
+
+                      {deletingThumbnail ? (
+                        <div className='absolute inset-0 flex items-center justify-center bg-black/30 rounded'>
+                          <p className='text-white text-sm'>Deleting...</p>
+                        </div>
+                      ) : (
+                        <button
+                          type='button'
+                          onClick={handleDeleteThumbnail}
+                          className='absolute top-2 right-2 bg-white rounded-full p-1 shadow hover:bg-red-100'
+                        >
+                          <IoIosCloseCircle size={22} className='cursor-pointer' />
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
                 <SelectField
                   name='category'
                   label='Category'
@@ -242,7 +341,11 @@ const CreatePostPage = () => {
 
               <div>
                 <p>Content</p>
-                <PostEditor setEditor={setEditor} />
+                <PostEditor
+                  key={id || 'create'}
+                  setEditor={setEditor}
+                  setEditorReady={setEditorReady}
+                />
               </div>
 
               <Button loading={isLoading} type='submit' size='sm' variant='secondary' className='hover:bg-light-coffee hover:text-white uppercase mt-4'>{isLoading ? 'Saving...' : isEdit ? 'Update Post' : 'Save Post'}</Button>

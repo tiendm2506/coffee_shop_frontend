@@ -12,8 +12,6 @@ const BlogAdmin = () => {
   const post = useSelector(selectPostDetail)
   const router = useRouter()
   const { slug } = router.query
-  console.log('post 123456: ', post)
-  console.log('slug: ', slug)
 
   useEffect(() => {
     dispatch(getPostDetailBySlug({ slug }))

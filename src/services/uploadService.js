@@ -4,10 +4,10 @@ import { API_ENDPOINTS } from '@/constants'
 export const uploadService = {
   async uploadImage(file) {
     const formData = new FormData()
-    formData.append('upload', file)
+    formData.append('image', file)
     const response =
       await apiService.post(
-        API_ENDPOINTS.UPLOAD_IMAGE,
+        API_ENDPOINTS.UPLOAD_SINGLE_IMAGE,
         formData,
         {
           headers: {
@@ -18,3 +18,5 @@ export const uploadService = {
     return response
   }
 }
+
+

@@ -17,7 +17,6 @@ export default function BlogPage() {
   const posts = useSelector(selectListPosts)
   const highlightPosts = useSelector(selectHighlightPosts)
   const categoryList = useSelector(selectListCategories)
-  console.log('categoryList: ', categoryList)
 
   useEffect(() => {
     dispatch(getListCategories({ type: CATEGORY_TYPE.POST }))
@@ -80,7 +79,7 @@ export default function BlogPage() {
                         title={post?.title}
                         description={post?.description}
                         date={post?.createdAt}
-                        thumb={post?.thumbnail}
+                        thumb={post?.thumbnail?.url}
                         url={ROUTES.BLOG_DETAIL_PAGE.replace(':slug', post?.slug)}
                       />
                     )
