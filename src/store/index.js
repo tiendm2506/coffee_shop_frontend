@@ -15,6 +15,13 @@ import modalReducer from './modalSlice'
 import clientReducer from './clientSlice'
 import postReducer from './postSlice'
 import uploadReducer from './uploadSlice'
+import authReducer from './authSlice'
+
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  blacklist: ['loading', 'error']
+}
 
 const rootReducer = combineReducers({
   loader: loaderReducer,
@@ -28,13 +35,17 @@ const rootReducer = combineReducers({
   modal: modalReducer,
   client: clientReducer,
   post: postReducer,
-  upload: uploadReducer
+  upload: uploadReducer,
+  auth: persistReducer(
+    authPersistConfig,
+    authReducer
+  )
 })
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['cart', 'user', 'notification']
+  whitelist: ['cart', 'notification']
 }
 
 const persistedReducer = persistReducer(

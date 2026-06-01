@@ -7,10 +7,13 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 
 import { resetNotification } from '@/store/notificationSlice'
+import { selectUser } from '@/store/authSlice'
 
 const TopMenu = () => {
   const dispatch = useDispatch()
   const count = useSelector((state) => state.notification.count)
+  const user = useSelector(selectUser)
+
   return (
     <div className='flex justify-between items-center px-4 py-3 bg-secondary text-white border-b border-b-white'>
       <IoReorderThree className='cursor-pointer' size={22} />
@@ -23,7 +26,7 @@ const TopMenu = () => {
           <FaBell size={24} />
           <span className='absolute -top-1 right-0 w-4 h-4 inline-flex items-center justify-center bg-light-coffee-hover text-white text-sm rounded-full'>{count}</span>
         </div>
-        <div className='flex items-center'><RxAvatar size={35} /> <span className='font-bold ml-2'>Admin</span></div>
+        <div className='flex items-center'><RxAvatar size={35} /> <span className='font-bold ml-2'>{user?.name}</span></div>
       </div>
     </div>
   )

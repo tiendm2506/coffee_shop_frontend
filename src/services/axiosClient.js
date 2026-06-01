@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { API_BASE_URL, API_ENDPOINTS } from '@/constants'
-import { logout } from '@/store/userSlice'
+import { logout, setAuth } from '@/store/authSlice'
+import { store } from '@/store'
 
 let isRefreshing = false
 let failedQueue = []
@@ -33,7 +34,7 @@ const apiRefreshToken = axios.create({
 
 // Add token automatically
 axiosClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('accessToken')
+  const token = store.getState().auth.accessToken
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -46,9 +47,9 @@ axiosClient.interceptors.response.use(
     return response.data
   },
   async (error) => {
+    const state = store.getState()
     const originalRequest = error.config
     if (error.response?.status === 401) {
-      const { store } = await import('@/store')
       store.dispatch(logout())
       return Promise.reject(error)
     }
@@ -69,30 +70,30 @@ axiosClient.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken')
-        const accessToken = localStorage.getItem('accessToken')
-
-        const { data } = await apiRefreshToken.post(
+        const { response } = await apiRefreshToken.post(
           API_ENDPOINTS.REFRESH_TOKEN,
           {},
           {
             headers: {
-              'x-access-token': accessToken,
-              'Authorization': `Bearer ${refreshToken}`
+              'x-access-token': state.auth.accessToken,
+              'Authorization': `Bearer ${state.auth.refreshToken}`
             }
           }
         )
 
-        localStorage.setItem('accessToken', data.metaData.accessToken)
-        localStorage.setItem('refreshToken', data.metaData.refreshToken)
+        store.dispatch(
+          setAuth({
+            accessToken: response.metaData.accessToken,
+            refreshToken: response.metaData.refreshToken,
+            user: response.metaData.user
+          })
+        )
 
-        processQueue(null, data.metaData.accessToken)
-
-        originalRequest.headers['Authorization'] = 'Bearer ' + data.metaData.accessToken
+        processQueue(null, response.metaData.accessToken)
+        originalRequest.headers['Authorization'] = 'Bearer ' + response.metaData.accessToken
         return axiosClient(originalRequest)
       } catch (err) {
         processQueue(err, null)
-        const { store } = await import('@/store')
         store.dispatch(logout())
         return Promise.reject(err)
       } finally {

@@ -10,7 +10,8 @@ export const ROUTES = {
   ABOUT_PAGE: '/about',
   CONTACT_PAGE: '/contact',
   CHECKOUT_PAGE: '/checkout',
-  THANKYOU_PAGE: '/thankyou'
+  THANKYOU_PAGE: '/thankyou',
+  LOGIN: '/auth/login'
 }
 
 export const ADMIN_ROUTES = {

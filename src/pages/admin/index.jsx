@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaArrowUpLong } from 'react-icons/fa6'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -8,6 +8,10 @@ import { AdminLayout } from '@/components/layout'
 import LineChart from '@/components/admin/chart/LineChart'
 
 const DashboardPage = () => {
+  useEffect(() => {
+
+  }, [])
+
   return (
     <>
       <Head>

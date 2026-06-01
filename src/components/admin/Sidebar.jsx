@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
+import { useDispatch } from 'react-redux'
 import { FaHome } from 'react-icons/fa'
 import { IoBagCheck } from 'react-icons/io5'
 import { FaRegEdit } from 'react-icons/fa'
@@ -11,11 +12,21 @@ import { FaFolder } from 'react-icons/fa'
 import { GiSwapBag } from 'react-icons/gi'
 import { CgLogOut } from 'react-icons/cg'
 import { BiCategory } from 'react-icons/bi'
+
 import { ADMIN_ROUTES } from '@/constants'
+import { logout } from '@/store/authSlice'
+import { ROUTES } from '@/constants'
 
 const Sidebar = () => {
   const router = useRouter()
   const { pathname }= router
+  const dispatch = useDispatch()
+
+  const handleLogOut = () => {
+    dispatch(logout())
+    router.push(ROUTES.LOGIN)
+  }
+
   return (
     <div className='bg-secondary w-full h-screen text-white flex flex-col justify-between'>
       <div>
@@ -31,7 +42,7 @@ const Sidebar = () => {
           <li className='border-b border-b-white/50'><Link className={clsx('flex items-center px-4 py-2', pathname === ADMIN_ROUTES.CATEGORY_ADMIN_PAGE ?'bg-secondary-hover' : '')} href={ADMIN_ROUTES.CATEGORY_ADMIN_PAGE}><BiCategory size={20} className='mr-2' /> Category</Link></li>
         </ul>
       </div>
-      <div className='px-4 pb-15'><button className='flex items-center cursor-pointer'><CgLogOut size={20} className='mr-2' /> Logout</button></div>
+      <div className='px-4 pb-15'><button className='flex items-center cursor-pointer' onClick={handleLogOut}><CgLogOut size={20} className='mr-2' /> Logout</button></div>
     </div>
   )
 }

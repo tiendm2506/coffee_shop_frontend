@@ -1,18 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { EmptyLayout } from '@/components/layout'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { createLoadingSelector } from '@/store/loaderSlice'
+import { login, setAuth, LOGIN } from '@/store/authSlice'
 import { object, string } from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
 import InputField from '@/components/form/InputField'
 import Button from '@/components/common/Button'
+import { ADMIN_ROUTES } from '@/constants'
 
 const LoginPage = () => {
+  const router = useRouter()
   const dispatch = useDispatch()
-  const loadingSelector = createLoadingSelector(['sdsd'])
+  const loadingSelector = createLoadingSelector([LOGIN])
   const isLoading = useSelector((state) => loadingSelector(state.loader))
+  const accessToken = useSelector((state) => state.auth.accessToken)
 
   const schema = object({
     email: string().required('Please enter your email').email('Email is invalid'),
@@ -30,40 +36,53 @@ const LoginPage = () => {
   const { reset } = methods
 
   const onSubmit = async(data) => {
-    console.log('data: ', data)
     try {
-      //
+      await dispatch(login(data)).unwrap()
+      toast.success('Login successfully')
+      router.push(ADMIN_ROUTES.DASHBOARD)
     } catch (error) {
-      toast.error(error?.message)
+      toast.error(error?.message || 'Login failed')
     }
   }
+
+  useEffect(() => {
+    if (accessToken) {
+      router.push(ADMIN_ROUTES.DASHBOARD)
+    }
+  }, [accessToken, router])
+
   return (
     <EmptyLayout>
-      <section className='h-screen w-screen flex justify-center items-center'>
-        <div className="bg-[url('/images/bg-auth.png')] bg-cover blur-xs absolute left-0 top-0 w-full h-full z-10" />
-        <div className='bg-white/80 p-10 rounded-md relative z-20 text-secondary'>
-          <h1 className='text-3xl font-bold'>Welcome Back!</h1>
-          <h6 className='my-2'>Login to access your dashboard.</h6>
-          <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)} className='md:w-80'>
-              <div>
-                <InputField
-                  name='email'
-                  label='Email'
-                  required
-                />
-                <InputField
-                  name='password'
-                  label='Password'
-                  type='password'
-                  required
-                />
-              </div>
-              <Button type='submit' variant='secondary' className='w-full uppercase'>Log In</Button>
-            </form>
-          </FormProvider>
-        </div>
-      </section>
+      <Head>
+        <title>Login</title>
+      </Head>
+      <main>
+        <section className='h-screen w-screen flex justify-center items-center'>
+          <div className="bg-[url('/images/bg-auth.png')] bg-cover blur-xs absolute left-0 top-0 w-full h-full z-10" />
+          <div className='bg-white/80 p-10 rounded-md relative z-20 text-secondary'>
+            <h1 className='text-3xl font-bold'>Welcome Back!</h1>
+            <h6 className='my-2'>Login to access your dashboard.</h6>
+            <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(onSubmit)} className='md:w-80'>
+                <div>
+                  <InputField
+                    name='email'
+                    label='Email'
+                    required
+                  />
+                  <InputField
+                    name='password'
+                    label='Password'
+                    type='password'
+                    required
+                  />
+                </div>
+                <Button disabled={isLoading} loading={isLoading} type='submit' variant='secondary' className='w-full uppercase'>{isLoading ? 'Logging...' : 'Log In'}</Button>
+              </form>
+            </FormProvider>
+          </div>
+        </section>
+      </main>
     </EmptyLayout>
   )
 }
