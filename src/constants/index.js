@@ -36,6 +36,7 @@ export const API_ENDPOINTS = {
   GET_PRODUCT_DETAIL_BY_SLUG: '/product/:slug',
   DELETE_PRODUCT_BY_ID: '/product/remove/:id',
   GET_LIST_PRODUCTS: '/product/list',
+  GET_BEST_SELLING_PRODUCTS: '/product/best-selling',
 
   CREATE_PROMOTION: '/promotion/create',
   UPDATE_PROMOTION: '/promotion/update/:id',

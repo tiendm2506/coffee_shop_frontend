@@ -19,15 +19,15 @@ export default function BlogPage() {
   const [categoryNameFilter, setCategoryNameFilter] = useState('')
 
   const handleClickCategory =(cat) => {
-    dispatch(getListPosts({ limit: 4, category_slug: cat?.slug }))
+    dispatch(getListPosts({ limit: 4, category_slug: cat?.slug, published: true }))
     setCategoryNameFilter(cat?.name)
   }
 
   useEffect(() => {
     dispatch(getListCategories({ type: CATEGORY_TYPE.POST }))
     Promise.all([
-      dispatch(getListPosts({ limit: 4 })),
-      dispatch(getListPosts({ limit: 2, highlight: true }))
+      dispatch(getListPosts({ limit: 4, published: true })),
+      dispatch(getListPosts({ limit: 2, highlight: true, published: true }))
     ])
   }, [])
 
@@ -98,7 +98,7 @@ export default function BlogPage() {
                 <div>
                   <h3 className='text-secondary text-2xl border-b border-b-[#ececed] pb-6 mb-6'>Categories</h3>
                   <ul>
-                    <li className='cursor-pointer' onClick={() => dispatch(getListPosts({ limit: 4 }))}><span className='ct-category-item'>All</span></li>
+                    <li className='cursor-pointer' onClick={() => dispatch(getListPosts({ limit: 4, published: true }))}><span className='ct-category-item'>All</span></li>
                     {
                       categoryList.map((cat) => <li key={cat?._id} className='cursor-pointer' onClick={() => handleClickCategory(cat)}><span className='ct-category-item' href='#'>{cat?.name}</span></li>)
                     }

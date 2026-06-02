@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 import { closeModal } from '@/store/modalSlice'
 import { toast } from 'react-toastify'
 import Button from '../common/Button'
@@ -46,7 +47,16 @@ const OrderDetailModal = ({ name }) => {
 
   }
 
+  useEffect(() => {
+    if (data?.order_status) {
+      methods.reset({
+        order_status: data.order_status
+      })
+    }
+  }, [data, methods])
+
   if (!isOpen || modalName !== name) return null
+
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4'>

@@ -10,7 +10,7 @@ import FadeUpAnimation from '@/components/common/FadeUpAnimation'
 import Product from '@/components/product/Product'
 import HeadlineTag from '@/components/HeadlineTag'
 import { MainLayout } from '@/components/layout'
-import { ROUTES } from '@/constants'
+import { ROUTES, STATUS } from '@/constants'
 import { getListProducts, selectListProducts, selectHighlightProducts } from '@/store/productSlice'
 
 export default function Home() {
@@ -20,8 +20,8 @@ export default function Home() {
 
   useEffect(() => {
     Promise.all([
-      dispatch(getListProducts({ limit: 6 })),
-      dispatch(getListProducts({ limit: 2, highlight: true }))
+      dispatch(getListProducts({ limit: 6, status: STATUS.ACTIVE })),
+      dispatch(getListProducts({ limit: 2, highlight: true, status: STATUS.ACTIVE }))
     ])
   }, [])
 
@@ -90,9 +90,9 @@ export default function Home() {
               <HeadlineTag title='More Products' />
               <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6'>
                 {
-                  listProducts.map((product, index) =>
+                  listProducts.map((product) =>
                     <Product
-                      key={index}
+                      key={product._id}
                       name={product.name}
                       images={product.images}
                       originPrice={product.origin_price}

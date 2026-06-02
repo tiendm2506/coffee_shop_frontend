@@ -85,6 +85,7 @@ const ListPostPage = () => {
                   <th className='px-4 py-3'>Category</th>
                   <th className='px-4 py-3'>Slug</th>
                   <th className='px-4 py-3'>Highlight</th>
+                  <th className='px-4 py-3'>Published</th>
                   <th className='px-4 py-3'>Create At</th>
                   <th className='px-4 py-3'>Action</th>
                 </tr>
@@ -104,6 +105,7 @@ const ListPostPage = () => {
                       <td className='px-4 py-3 font-medium'>{post?.category?.name}</td>
                       <td className='px-4 py-3 font-medium'>{post?.slug}</td>
                       <td className='px-4 py-3 font-medium'><span className={clsx(post?.highlight ? 'bg-green-100 text-green-700 font-bold px-2 rounded-lg' : '')}>{post?.highlight ? 'Highlight' : 'No'}</span></td>
+                      <td className='px-4 py-3 font-medium'><span className={clsx(post?.published ? 'bg-green-100 text-green-700 font-bold px-2 rounded-lg' : '')}>{post?.published ? 'Yes' : 'No'}</span></td>
                       <td className='px-4 py-3 font-medium'>{datetimeHelpers.formatDate(post?.createdAt, 'en')}</td>
                       <td className='px-4 py-3 flex items-center gap-4'>
                         <CiEdit size={20} className='cursor-pointer transition-all hover:scale-[1.2]' onClick={() => handleEdit(post?._id)} />

@@ -3,13 +3,26 @@ import { FaArrowUpLong } from 'react-icons/fa6'
 import Link from 'next/link'
 import Image from 'next/image'
 import Head from 'next/head'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { AdminLayout } from '@/components/layout'
 import LineChart from '@/components/admin/chart/LineChart'
+import { getListOrders, GET_LIST_ORDERS, selectListOrders } from '@/store/orderSlice'
+import { getListPosts, GET_LIST_POSTS, selectListPosts } from '@/store/postSlice'
+import { getBestSellingProducts, GET_BEST_SELLING_PRODUCTS, selectBestSellingProducts } from '@/store/productSlice'
+import { ADMIN_ROUTES, ROUTES } from '@/constants'
+import { datetimeHelpers } from '@/helpers'
 
 const DashboardPage = () => {
-  useEffect(() => {
+  const dispatch = useDispatch()
+  const orders = useSelector(selectListOrders)
+  const posts = useSelector(selectListPosts)
+  const bestSellingProducts = useSelector(selectBestSellingProducts)
 
+  useEffect(() => {
+    dispatch(getListOrders({ limit: 5 }))
+    dispatch(getListPosts({ limit: 3 }))
+    dispatch(getBestSellingProducts())
   }, [])
 
   return (
@@ -51,15 +64,15 @@ const DashboardPage = () => {
           <div className='bg-white px-4 rounded-lg'>
             <div className='flex justify-between items-center border-b border-primary/50 py-4'>
               <h3 className='text-secondary text-lg font-bold'>Newest orders</h3>
-              <Link href='#' className='text-blue-500'>View all</Link>
+              <Link href={ADMIN_ROUTES.ORDER_ADMIN_PAGE} className='text-blue-500'>View all</Link>
             </div>
             <ul className='py-2'>
               {
-                Array.from({ length: 5 }).map((_, index) => (
+                orders.map((order, index) => (
                   <li className='grid grid-cols-[2fr_2fr_1fr] py-2' key={index}>
-                    <span className='font-bold text-secondary'>#ORD1005</span>
-                    <span>20/5/2026</span>
-                    <span className='text-right font-bold text-secondary'>250 USD</span>
+                    <span className='font-bold text-secondary'>#ORD{order?._id.slice(-4).toUpperCase()}</span>
+                    <span>{datetimeHelpers.formatDate(order?.createdAt)}</span>
+                    <span className='text-right font-bold text-secondary'>{order?.final_total} USD</span>
                   </li>
                 ))
               }
@@ -71,17 +84,17 @@ const DashboardPage = () => {
           <div className='bg-white px-4 rounded-lg'>
             <div className='flex justify-between items-center border-b border-primary/50 py-4'>
               <h3 className='text-secondary text-lg font-bold'>Best selling</h3>
-              <Link href='#' className='text-blue-500'>View all</Link>
+              <Link href={ADMIN_ROUTES.PRODUCT_ADMIN_PAGE} className='text-blue-500'>View all</Link>
             </div>
             <ul className='py-2'>
               {
-                Array.from({ length: 3 }).map((_, index) => (
+                bestSellingProducts.map((product, index) => (
                   <li className='grid grid-cols-[4fr_1fr] py-2' key={index}>
                     <div className='flex items-center'>
-                      <Image src='https://cdn.prod.website-files.com/5be96251aaba7a84f6ecdf81/5be96251aaba7a1db2ece009_natanja-grun-600152-unsplash.jpg' width={60} height={60} className='rounded-full' alt='product' />
-                      <span className='font-bold text-secondary ml-4'>Espresso Cup by Mugs</span>
+                      <Image src={product?.image} width={60} height={60} className='rounded-full' alt={product?.name} />
+                      <span className='font-bold text-secondary ml-4'>{product?.name}</span>
                     </div>
-                    <span className='font-bold text-secondary flex items-center justify-end'>50 items</span>
+                    <span className='font-bold text-secondary flex items-center justify-end'>{product?.total_sold} items</span>
                   </li>
                 ))
               }
@@ -90,14 +103,14 @@ const DashboardPage = () => {
           <div className='bg-white px-4 rounded-lg'>
             <div className='flex justify-between items-center border-b border-primary/50 py-4'>
               <h3 className='text-secondary text-lg font-bold'>Newest post</h3>
-              <Link href='#' className='text-blue-500'>View all</Link>
+              <Link href={ADMIN_ROUTES.LIST_POST_PAGE} className='text-blue-500'>View all</Link>
             </div>
             <ul className='py-2'>
               {
-                Array.from({ length: 3 }).map((_, index) => (
+                posts.map((post, index) => (
                   <li className='grid grid-cols-[4fr_1fr] py-2' key={index}>
-                    <span className='font-bold text-secondary'>How long does a cup of coffee keep you awake?</span>
-                    <span className='text-right'>25/4/2020</span>
+                    <Link href={ROUTES.BLOG_DETAIL_PAGE.replace(':slug', post?.slug)} className='font-bold text-secondary hover:text-light-coffee' target='_blank'>{post?.title}</Link>
+                    <span className='text-right'>{datetimeHelpers.formatDate(post?.createdAt)}</span>
                   </li>
                 ))
               }

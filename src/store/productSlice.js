@@ -6,7 +6,8 @@ const initialState = {
   productList: [],
   highlightProducts: [],
   pagination: {},
-  currentProduct: {}
+  currentProduct: {},
+  bestSellingProducts: []
 }
 
 export const CREATE_PRODUCT = 'ProductState/CREATE_PRODUCT'
@@ -89,6 +90,22 @@ export const deleteProductById = createAsyncThunk(
   }
 )
 
+export const GET_BEST_SELLING_PRODUCTS = 'ProductState/GET_BEST_SELLING_PRODUCTS'
+export const getBestSellingProducts = createAsyncThunk(
+  GET_BEST_SELLING_PRODUCTS,
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await apiService.get(API_ENDPOINTS.GET_BEST_SELLING_PRODUCTS)
+      if (!response.success) {
+        return rejectWithValue(response.metaData)
+      }
+      return response.metaData
+    } catch (error) {
+      return rejectWithValue(error)
+    }
+  }
+)
+
 
 const productSlice = createSlice({
   name: 'product',
@@ -125,11 +142,15 @@ const productSlice = createSlice({
     builder.addCase(getProductDetailBySlug.fulfilled, (state, action) => {
       state.currentProduct = action.payload
     })
+    builder.addCase(getBestSellingProducts.fulfilled, (state, action) => {
+      state.bestSellingProducts = action.payload
+    })
   }
 })
 
 export const selectListProducts = (state) => state.product.productList
 export const selectHighlightProducts = (state) => state.product.highlightProducts
 export const selectCurrentProduct = (state) => state.product.currentProduct
+export const selectBestSellingProducts = (state) => state.product.bestSellingProducts
 
 export default productSlice.reducer

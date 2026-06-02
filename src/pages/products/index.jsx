@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { getListProducts, selectListProducts } from '@/store/productSlice'
 import { getListCategories, selectListCategories } from '@/store/categorySlice'
-import { ROUTES, CATEGORY_TYPE } from '@/constants'
+import { ROUTES, CATEGORY_TYPE, STATUS } from '@/constants'
 import Pagination from '@/components/common/Pagination'
 import { MainLayout } from '@/components/layout'
 import Product from '@/components/product/Product'
@@ -16,6 +16,7 @@ export default function ProductPage() {
   const [category, setCategory] = useState('all')
   const dispatch = useDispatch()
   const listProducts = useSelector(selectListProducts)
+  const activeProducts = listProducts.filter(product => product.status === STATUS.ACTIVE)
   const listCategories = useSelector(selectListCategories)
   const pagination = useSelector(state => state.product.pagination)
   const [page, setPage] = useState(1)
@@ -82,22 +83,27 @@ export default function ProductPage() {
               }
             </div>
             {
-              listProducts.length > 0
-                ? <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6'>
-                  {
-                    listProducts.map((product) =>
-                      <Product
-                        key={product._id}
-                        name={product.name}
-                        images={product.images}
-                        originPrice={product.origin_price}
-                        promotionPrice={product.promotion_price}
-                        isOnSale={product.on_sale}
-                        url={ROUTES.PRODUCTS_DETAIL_PAGE.replace(':slug', product.slug)}
-                      />)
-                  }
-                </div>
-                : <p className='text-center font-bold capitalize'>Empty product</p>
+              activeProducts.length > 0
+                ? (
+                  <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-6'>
+                    {
+                      activeProducts.map((product) => (
+                        <Product
+                          key={product._id}
+                          name={product.name}
+                          images={product.images}
+                          originPrice={product.origin_price}
+                          promotionPrice={product.promotion_price}
+                          isOnSale={product.on_sale}
+                          url={ROUTES.PRODUCTS_DETAIL_PAGE.replace(':slug', product.slug)}
+                        />
+                      ))
+                    }
+                  </div>
+                )
+                : (
+                  <p className='text-center font-bold capitalize'>Empty product</p>
+                )
             }
 
             <Pagination
