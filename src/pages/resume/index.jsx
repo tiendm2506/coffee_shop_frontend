@@ -176,7 +176,7 @@ export default function Resume() {
               </div>
 
               <h1 className='mt-8 text-4xl font-bold tracking-wide'>
-                ĐÀO MINH TIẾN
+                ĐÀO MINH TIẾN 1
               </h1>
 
               <p className='mt-3 text-lg text-orange-400'>
