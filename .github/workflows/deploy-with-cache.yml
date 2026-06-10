@@ -31,6 +31,9 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
+          build-args: |
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_SERVER_BACKEND_URL=${{ secrets.NEXT_PUBLIC_SERVER_BACKEND_URL }}
           #Tối uu hóa thời gian build bằng cách sử dụng cache
           cache-from: type=gha
           cache-to: type=gha,mode=max
