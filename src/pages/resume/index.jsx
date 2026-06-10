@@ -89,7 +89,7 @@ export default function Resume() {
           className={`
             fixed
             left-0
-            top-[73px]
+            top-18.25
             z-40
             w-full
             border-b
