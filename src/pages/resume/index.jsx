@@ -41,11 +41,11 @@ export default function Resume() {
   ]
 
   return (
-    <main className="bg-[#0f172a] text-white">
-      <div className="flex flex-col md:flex-row">
+    <main className='bg-[#0f172a] text-white'>
+      <div className='flex flex-col md:flex-row'>
         {/* MOBILE HEADER */}
         <div
-          className="
+          className='
             sticky
             top-0
             z-50
@@ -59,26 +59,26 @@ export default function Resume() {
             py-4
             backdrop-blur
             md:hidden
-          "
+          '
         >
           <div>
-            <h1 className="text-lg font-bold">
+            <h1 className='text-lg font-bold'>
               ĐÀO MINH TIẾN
             </h1>
 
-            <p className="text-sm text-orange-400">
+            <p className='text-sm text-orange-400'>
               Senior Frontend Developer
             </p>
           </div>
 
           <button
             onClick={() => setOpenMenu(!openMenu)}
-            className="
+            className='
               rounded-xl
               border
               border-white/10
               p-3
-            "
+            '
           >
             ☰
           </button>
@@ -105,12 +105,12 @@ export default function Resume() {
     }
           `}
         >
-          <ul className="space-y-2 p-6">
+          <ul className='space-y-2 p-6'>
             {menuItems.map((item) => (
               <li key={item.label}>
                 <button
                   onClick={() => scrollToSection(item.ref)}
-                  className="
+                  className='
                     w-full
                     rounded-xl
                     border
@@ -124,7 +124,7 @@ export default function Resume() {
                     hover:border-orange-400
                     hover:bg-orange-500/10
                     hover:text-orange-400
-                  "
+                  '
                 >
                   {item.label}
                 </button>
@@ -135,7 +135,7 @@ export default function Resume() {
 
         {/* SIDEBAR */}
         <aside
-          className="
+          className='
             hidden
             md:sticky
             md:top-0
@@ -148,13 +148,13 @@ export default function Resume() {
             md:border-white/10
             md:bg-[#111827]
             md:p-10
-          "
+          '
         >
           <div>
             {/* AVATAR */}
-            <div className="flex flex-col items-center text-center">
+            <div className='flex flex-col items-center text-center'>
               <div
-                className="
+                className='
                   flex
                   h-44
                   w-44
@@ -170,56 +170,56 @@ export default function Resume() {
                   duration-500
                   hover:scale-105
                   hover:shadow-[0_0_100px_rgba(249,115,22,0.4)]
-                "
+                '
               >
                 👨‍💻
               </div>
 
-              <h1 className="mt-8 text-4xl font-bold tracking-wide">
+              <h1 className='mt-8 text-4xl font-bold tracking-wide'>
                 ĐÀO MINH TIẾN
               </h1>
 
-              <p className="mt-3 text-lg text-orange-400">
+              <p className='mt-3 text-lg text-orange-400'>
                 Senior Frontend Developer
               </p>
 
-              <p className="mt-6 max-w-sm leading-7 text-slate-400">
+              <p className='mt-6 max-w-sm leading-7 text-slate-400'>
                 Frontend Developer with 10 years of experience
                 building scalable and modern web applications.
               </p>
             </div>
 
             {/* INFO */}
-            <div className="mt-14 space-y-5 text-sm text-slate-300">
-              <div className="flex items-center gap-4">
-                <span className="text-orange-400">📍</span>
+            <div className='mt-14 space-y-5 text-sm text-slate-300'>
+              <div className='flex items-center gap-4'>
+                <span className='text-orange-400'>📍</span>
                 <span>Ho Chi Minh City, Vietnam</span>
               </div>
 
-              <div className="flex items-center gap-4">
-                <span className="text-orange-400">📅</span>
+              <div className='flex items-center gap-4'>
+                <span className='text-orange-400'>📅</span>
                 <span>25 Jun 1993</span>
               </div>
 
-              <div className="flex items-center gap-4">
-                <span className="text-orange-400">💻</span>
+              <div className='flex items-center gap-4'>
+                <span className='text-orange-400'>💻</span>
                 <span>10+ Years Experience</span>
               </div>
 
-              <div className="flex items-center gap-4">
-                <span className="text-orange-400">🌐</span>
+              <div className='flex items-center gap-4'>
+                <span className='text-orange-400'>🌐</span>
                 <span>English Communication</span>
               </div>
             </div>
 
             {/* MENU */}
-            <nav className="mt-16">
-              <ul className="space-y-5">
+            <nav className='mt-16'>
+              <ul className='space-y-5'>
                 {menuItems.map((item) => (
                   <li key={item.label}>
                     <button
                       onClick={() => scrollToSection(item.ref)}
-                      className="
+                      className='
                         group
                         relative
                         flex
@@ -240,10 +240,10 @@ export default function Resume() {
                         hover:bg-white/5
                         hover:text-orange-400
                         hover:translate-x-2
-                      "
+                      '
                     >
                       <span
-                        className="
+                        className='
                           h-[2px]
                           w-8
                           bg-slate-500
@@ -251,13 +251,13 @@ export default function Resume() {
                           duration-500
                           group-hover:w-16
                           group-hover:bg-orange-400
-                        "
+                        '
                       />
 
                       {item.label}
 
                       <span
-                        className="
+                        className='
                           absolute
                           inset-0
                           -z-10
@@ -268,7 +268,7 @@ export default function Resume() {
                           bg-gradient-to-r
                           from-orange-500/10
                           to-transparent
-                        "
+                        '
                       />
                     </button>
                   </li>
@@ -278,11 +278,11 @@ export default function Resume() {
           </div>
 
           {/* SOCIAL */}
-          <div className="flex flex-wrap gap-4">
+          <div className='flex flex-wrap gap-4'>
             <a
-              href="https://github.com/tiendm2506"
-              target="_blank"
-              className="
+              href='https://github.com/tiendm2506'
+              target='_blank'
+              className='
                 rounded-xl
                 border
                 border-white/10
@@ -293,15 +293,15 @@ export default function Resume() {
                 hover:border-orange-400
                 hover:bg-orange-500/10
                 hover:text-orange-400
-              " rel="noreferrer"
+              ' rel='noreferrer'
             >
               GitHub
             </a>
 
             <a
-              href="https://demo.minhtien.com"
-              target="_blank"
-              className="
+              href='https://demo.minhtien.com'
+              target='_blank'
+              className='
                 rounded-xl
                 border
                 border-white/10
@@ -312,7 +312,7 @@ export default function Resume() {
                 hover:border-orange-400
                 hover:bg-orange-500/10
                 hover:text-orange-400
-              " rel="noreferrer"
+              ' rel='noreferrer'
             >
               Portfolio
             </a>
@@ -320,12 +320,12 @@ export default function Resume() {
         </aside>
 
         {/* RIGHT CONTENT */}
-        <section className="w-full md:w-[70%]">
+        <section className='w-full md:w-[70%]'>
           {/* HERO MOBILE */}
-          <section className="border-b border-white/10 px-6 py-20 md:hidden">
-            <div className="flex flex-col items-center text-center">
+          <section className='border-b border-white/10 px-6 py-20 md:hidden'>
+            <div className='flex flex-col items-center text-center'>
               <div
-                className="
+                className='
                   flex
                   h-32
                   w-32
@@ -334,16 +334,16 @@ export default function Resume() {
                   rounded-full
                   bg-orange-500/10
                   text-6xl
-                "
+                '
               >
                 👨‍💻
               </div>
 
-              <h2 className="mt-6 text-3xl font-bold">
+              <h2 className='mt-6 text-3xl font-bold'>
                 ĐÀO MINH TIẾN
               </h2>
 
-              <p className="mt-2 text-orange-400">
+              <p className='mt-2 text-orange-400'>
                 Senior Frontend Developer
               </p>
             </div>
@@ -352,17 +352,17 @@ export default function Resume() {
           {/* ABOUT */}
           <section
             ref={aboutRef}
-            className="border-b border-white/10 px-6 py-20 md:px-20 md:py-28"
+            className='border-b border-white/10 px-6 py-20 md:px-20 md:py-28'
           >
-            <p className="mb-3 text-sm uppercase tracking-widest text-orange-400">
+            <p className='mb-3 text-sm uppercase tracking-widest text-orange-400'>
               About Me
             </p>
 
-            <h2 className="text-4xl font-bold leading-tight md:text-6xl">
+            <h2 className='text-4xl font-bold leading-tight md:text-6xl'>
               Building scalable and modern web applications.
             </h2>
 
-            <p className="mt-10 max-w-4xl leading-8 text-slate-300">
+            <p className='mt-10 max-w-4xl leading-8 text-slate-300'>
               I am working as a Frontend Developer with about 10 years
               of experience building scalable web applications.
               Skilled in modern JavaScript frameworks such as React.js
@@ -370,7 +370,7 @@ export default function Resume() {
               maintainable, and reusable code.
             </p>
 
-            <p className="mt-6 max-w-4xl leading-8 text-slate-300">
+            <p className='mt-6 max-w-4xl leading-8 text-slate-300'>
               Experienced in developing responsive user interfaces,
               optimizing application performance, and collaborating
               closely with cross-functional teams to deliver
@@ -381,17 +381,17 @@ export default function Resume() {
           {/* SKILLS */}
           <section
             ref={skillsRef}
-            className="border-b border-white/10 px-6 py-20 md:px-20 md:py-28"
+            className='border-b border-white/10 px-6 py-20 md:px-20 md:py-28'
           >
-            <p className="mb-3 text-sm uppercase tracking-widest text-orange-400">
+            <p className='mb-3 text-sm uppercase tracking-widest text-orange-400'>
               Skills
             </p>
 
-            <h2 className="text-4xl font-bold md:text-6xl">
+            <h2 className='text-4xl font-bold md:text-6xl'>
               Technologies I Work With
             </h2>
 
-            <div className="mt-14 flex flex-wrap gap-4">
+            <div className='mt-14 flex flex-wrap gap-4'>
               {[
                 'HTML',
                 'CSS',
@@ -411,7 +411,7 @@ export default function Resume() {
               ].map((skill) => (
                 <div
                   key={skill}
-                  className="
+                  className='
                     rounded-xl
                     border
                     border-white/10
@@ -424,7 +424,7 @@ export default function Resume() {
                     hover:border-orange-400
                     hover:bg-orange-500/10
                     hover:text-orange-400
-                  "
+                  '
                 >
                   {skill}
                 </div>
@@ -435,21 +435,21 @@ export default function Resume() {
           {/* EXPERIENCE */}
           <section
             ref={experienceRef}
-            className="border-b border-white/10 px-6 py-20 md:px-20 md:py-28"
+            className='border-b border-white/10 px-6 py-20 md:px-20 md:py-28'
           >
-            <p className="mb-3 text-sm uppercase tracking-widest text-orange-400">
+            <p className='mb-3 text-sm uppercase tracking-widest text-orange-400'>
               Experience
             </p>
 
-            <h2 className="text-4xl font-bold md:text-6xl">
+            <h2 className='text-4xl font-bold md:text-6xl'>
               Work Experience
             </h2>
 
-            <div className="mt-16 space-y-16 border-l border-white/10 pl-8 md:pl-10">
+            <div className='mt-16 space-y-16 border-l border-white/10 pl-8 md:pl-10'>
               {/* DREAM VIET */}
-              <div className="relative">
+              <div className='relative'>
                 <div
-                  className="
+                  className='
                     absolute
                     -left-[39px]
                     top-2
@@ -458,22 +458,22 @@ export default function Resume() {
                     rounded-full
                     bg-orange-400
                     shadow-[0_0_20px_rgba(249,115,22,0.7)]
-                  "
+                  '
                 />
 
-                <p className="text-sm text-orange-400">
+                <p className='text-sm text-orange-400'>
                   Jan 2018 - Mar 2026
                 </p>
 
-                <h3 className="mt-2 text-2xl font-semibold md:text-3xl">
+                <h3 className='mt-2 text-2xl font-semibold md:text-3xl'>
                   Dream Viet Education
                 </h3>
 
-                <p className="mt-2 text-slate-400">
+                <p className='mt-2 text-slate-400'>
                   Front End Web Developer
                 </p>
 
-                <ul className="mt-6 space-y-3 leading-7 text-slate-300">
+                <ul className='mt-6 space-y-3 leading-7 text-slate-300'>
                   <li>
                     • Developed scalable applications using ReactJS
                     and NextJS
@@ -497,9 +497,9 @@ export default function Resume() {
               </div>
 
               {/* NAMTECH */}
-              <div className="relative">
+              <div className='relative'>
                 <div
-                  className="
+                  className='
                     absolute
                     -left-[39px]
                     top-2
@@ -508,22 +508,22 @@ export default function Resume() {
                     rounded-full
                     bg-orange-400
                     shadow-[0_0_20px_rgba(249,115,22,0.7)]
-                  "
+                  '
                 />
 
-                <p className="text-sm text-orange-400">
+                <p className='text-sm text-orange-400'>
                   Jun 2016 - Sep 2017
                 </p>
 
-                <h3 className="mt-2 text-2xl font-semibold md:text-3xl">
+                <h3 className='mt-2 text-2xl font-semibold md:text-3xl'>
                   NAMTech
                 </h3>
 
-                <p className="mt-2 text-slate-400">
+                <p className='mt-2 text-slate-400'>
                   Front End Web Developer
                 </p>
 
-                <ul className="mt-6 space-y-3 leading-7 text-slate-300">
+                <ul className='mt-6 space-y-3 leading-7 text-slate-300'>
                   <li>
                     • Developed responsive web interfaces
                   </li>
@@ -543,18 +543,18 @@ export default function Resume() {
           {/* PORTFOLIO */}
           <section
             ref={portfolioRef}
-            className="border-b border-white/10 px-6 py-20 md:px-20 md:py-28"
+            className='border-b border-white/10 px-6 py-20 md:px-20 md:py-28'
           >
-            <p className="mb-3 text-sm uppercase tracking-widest text-orange-400">
+            <p className='mb-3 text-sm uppercase tracking-widest text-orange-400'>
               Portfolio
             </p>
 
-            <h2 className="text-4xl font-bold md:text-6xl">
+            <h2 className='text-4xl font-bold md:text-6xl'>
               Featured Project
             </h2>
 
             <div
-              className="
+              className='
                 mt-16
                 overflow-hidden
                 rounded-3xl
@@ -565,22 +565,22 @@ export default function Resume() {
                 duration-500
                 hover:border-orange-400
                 hover:shadow-[0_20px_60px_rgba(249,115,22,0.15)]
-              "
+              '
             >
-              <div className="h-56 bg-gradient-to-br from-orange-500/20 to-slate-900 md:h-72" />
+              <div className='h-56 bg-gradient-to-br from-orange-500/20 to-slate-900 md:h-72' />
 
-              <div className="p-6 md:p-10">
-                <h3 className="text-3xl font-semibold">
+              <div className='p-6 md:p-10'>
+                <h3 className='text-3xl font-semibold'>
                   Coffee Shop Website
                 </h3>
 
-                <p className="mt-6 leading-8 text-slate-300">
+                <p className='mt-6 leading-8 text-slate-300'>
                   A full-stack web application built independently
                   using Next.js, TailwindCSS, Node.js, Express.js,
                   and MongoDB.
                 </p>
 
-                <div className="mt-8 flex flex-wrap gap-3">
+                <div className='mt-8 flex flex-wrap gap-3'>
                   {[
                     'NextJS',
                     'TailwindCSS',
@@ -590,25 +590,25 @@ export default function Resume() {
                   ].map((tech) => (
                     <span
                       key={tech}
-                      className="
+                      className='
                         rounded-lg
                         bg-orange-500/10
                         px-4
                         py-2
                         text-sm
                         text-orange-400
-                      "
+                      '
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
 
-                <div className="mt-10 flex flex-wrap gap-4">
+                <div className='mt-10 flex flex-wrap gap-4'>
                   <a
-                    href="https://demo.minhtien.com"
-                    target="_blank"
-                    className="
+                    href='https://demo.minhtien.com'
+                    target='_blank'
+                    className='
                       rounded-xl
                       bg-orange-500
                       px-6
@@ -618,15 +618,15 @@ export default function Resume() {
                       duration-500
                       hover:scale-105
                       hover:bg-orange-400
-                    " rel="noreferrer"
+                    ' rel='noreferrer'
                   >
                     Live Demo
                   </a>
 
                   <a
-                    href="https://github.com/tiendm2506/coffee_shop_FE"
-                    target="_blank"
-                    className="
+                    href='https://github.com/tiendm2506/coffee_shop_FE'
+                    target='_blank'
+                    className='
                       rounded-xl
                       border
                       border-white/10
@@ -637,15 +637,15 @@ export default function Resume() {
                       hover:border-orange-400
                       hover:bg-orange-500/10
                       hover:text-orange-400
-                    " rel="noreferrer"
+                    ' rel='noreferrer'
                   >
                     Frontend GitHub
                   </a>
 
                   <a
-                    href="https://github.com/tiendm2506/coffee_shop_BE"
-                    target="_blank"
-                    className="
+                    href='https://github.com/tiendm2506/coffee_shop_BE'
+                    target='_blank'
+                    className='
                       rounded-xl
                       border
                       border-white/10
@@ -656,7 +656,7 @@ export default function Resume() {
                       hover:border-orange-400
                       hover:bg-orange-500/10
                       hover:text-orange-400
-                    " rel="noreferrer"
+                    ' rel='noreferrer'
                   >
                     Backend GitHub
                   </a>
@@ -668,25 +668,25 @@ export default function Resume() {
           {/* CONTACT */}
           <section
             ref={contactRef}
-            className="px-6 py-20 md:px-20 md:py-28"
+            className='px-6 py-20 md:px-20 md:py-28'
           >
-            <p className="mb-3 text-sm uppercase tracking-widest text-orange-400">
+            <p className='mb-3 text-sm uppercase tracking-widest text-orange-400'>
               Contact
             </p>
 
-            <h2 className="text-4xl font-bold md:text-6xl">
+            <h2 className='text-4xl font-bold md:text-6xl'>
               Let’s Work Together
             </h2>
 
-            <p className="mt-8 max-w-3xl leading-8 text-slate-300">
+            <p className='mt-8 max-w-3xl leading-8 text-slate-300'>
               I’m interested in frontend development opportunities,
               collaborations, and building modern web applications.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className='mt-10 flex flex-wrap gap-4'>
               <a
-                href="mailto:your-email@gmail.com"
-                className="
+                href='mailto:your-email@gmail.com'
+                className='
                   rounded-xl
                   bg-orange-500
                   px-6
@@ -696,15 +696,15 @@ export default function Resume() {
                   duration-500
                   hover:scale-105
                   hover:bg-orange-400
-                "
+                '
               >
                 Email Me
               </a>
 
               <a
-                href="https://github.com/tiendm2506"
-                target="_blank"
-                className="
+                href='https://github.com/tiendm2506'
+                target='_blank'
+                className='
                   rounded-xl
                   border
                   border-white/10
@@ -715,7 +715,7 @@ export default function Resume() {
                   hover:border-orange-400
                   hover:bg-orange-500/10
                   hover:text-orange-400
-                " rel="noreferrer"
+                ' rel='noreferrer'
               >
                 GitHub
               </a>
