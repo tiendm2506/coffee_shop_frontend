@@ -38,7 +38,7 @@ export default function Home() {
           <section className="px-4 h-132.5 flex justify-center items-center relative bg-[url('/images/banner-homepage.jpg')] bg-cover bg-no-repeat bg-bottom after:bg-black after:opacity-40 after:h-full after:w-full after:absolute after:z-10">
             <div className='text-center text-white relative z-20'>
               <h3 className='text-sm opacity-90 uppercase font-bold'>Best place to buy design</h3>
-              <h1 className='text-5xl my-3'>Coffee Mugs abc</h1>
+              <h1 className='text-5xl my-3'>Coffee Mugs</h1>
               <h6 className='text-lg mb-8 opacity-90'>The most versatile furniture system ever created. Designed to fit your life, made to move and grow.</h6>
               <Link href={ROUTES.PRODUCTS_PAGE}><Button variant='outline' size='lg' className='hover:bg-light-coffee hover:text-white hover:border-light-coffee font-bold'>Explore Our Products</Button></Link>
             </div>
