@@ -3,8 +3,8 @@ const nextConfig = {
   /* config options here */
   reactStrictMode: true,
   env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    NEXT_PUBLIC_SERVER_BACKEND_URL: process.env.NEXT_PUBLIC_SERVER_BACKEND_URL
+    NEXT_PUBLIC_API_URL: 'https://demoshop.site/api',
+    NEXT_PUBLIC_SERVER_BACKEND_URL: 'https://demoshop.site'
   },
   images: {
     remotePatterns: [
