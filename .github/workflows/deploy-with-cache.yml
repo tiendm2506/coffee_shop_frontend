@@ -32,8 +32,8 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
           #Tối uu hóa thời gian build bằng cách sử dụng cache
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          # cache-from: type=gha
+          # cache-to: type=gha,mode=max
 
   # JOB 2: DEPLOY LÊN VPS
   deploy:
