@@ -18,7 +18,7 @@ const processQueue = (error, token = null) => {
 }
 
 const axiosClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -26,7 +26,7 @@ const axiosClient = axios.create({
 })
 
 const apiRefreshToken = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     'Content-Type': 'application/json'
   }

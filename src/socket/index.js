@@ -1,6 +1,5 @@
 import { io } from 'socket.io-client'
-import { SERVER_BACKEND } from '@/constants'
 
-export const socket = io(SERVER_BACKEND, {
+export const socket = io(process.env.NEXT_PUBLIC_SERVER_BACKEND_URL, {
   transports: ['websocket']
 })
