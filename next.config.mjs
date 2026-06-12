@@ -1,4 +1,5 @@
-import { loadEnvConfig } from '@next/env'
+import nextEnv from '@next/env'
+const { loadEnvConfig } = nextEnv
 
 const { combinedEnv } = loadEnvConfig(process.cwd())
 
