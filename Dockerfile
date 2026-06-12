@@ -6,13 +6,15 @@ COPY package.json yarn.lock ./
 
 RUN yarn install
 
-# Khai báo ARG/ENV TRƯỚC khi COPY code
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_SERVER_BACKEND_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_SERVER_BACKEND_URL=$NEXT_PUBLIC_SERVER_BACKEND_URL
 
 COPY . .
+
+# Debug
+RUN cat .env.production
 
 RUN yarn build
 

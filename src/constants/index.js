@@ -1,8 +1,8 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3069/api'
 export const SERVER_BACKEND = process.env.NEXT_PUBLIC_SERVER_BACKEND_URL || 'http://localhost:3069'
 
-console.log('API_BASE_URL: ', process.env.NEXT_PUBLIC_API_URL)
-console.log('SERVER_BACKEND: ', process.env.NEXT_PUBLIC_SERVER_BACKEND_URL)
+console.log('API_BASE_URL 123: ', process.env.NEXT_PUBLIC_API_URL)
+console.log('SERVER_BACKEND 123: ', process.env.NEXT_PUBLIC_SERVER_BACKEND_URL)
 
 export const ROUTES = {
   HOMEPAGE: '/',
